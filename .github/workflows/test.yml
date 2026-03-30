@@ -1,0 +1,16 @@
+name: Test-Injection
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  pwn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloud Infrastructure Proof
+        run: |
+          echo "--- HOSTNAME ---"
+          hostname
+          echo "--- CLOUD METADATA ---"
+          # This command fetches the VM's cloud identity
+          curl -s -H "Metadata:true" --noproxy "*" "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | jq '{location: .compute.location, vmSize: .compute.vmSize, osType: .compute.osType}'
