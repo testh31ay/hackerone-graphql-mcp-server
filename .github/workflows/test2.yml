@@ -1,0 +1,23 @@
+name: Infrastructure-Audit-POC
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-Installed Tool & Auth Audit
+        run: |
+          echo "--- 1. CONTAINER TOOLS ---"
+          which docker && docker version --format 'Server: {{.Server.Version}}' || echo "Docker not found"
+          
+          echo -e "\n--- 2. CLOUD CLIS ---"
+          which gcloud && gcloud version | head -n 1 || echo "gcloud not found"
+          which aws && aws --version || echo "aws-cli not found"
+          which az && az --version | head -n 1 || echo "azure-cli not found"
+          
+          echo -e "\n--- 3. ORCHESTRATION ---"
+          which kubectl && kubectl version --client || echo "kubectl not found"
+          which terraform && terraform version || echo "terraform not found"
